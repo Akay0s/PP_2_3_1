@@ -1,37 +1,53 @@
 package entry1.util;
 
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:classpath:db.properties")
 public class HibernateConfig {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/firstdb";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "@ppleBIBL325";
+    @Value("${db.url}")
+    private String dbUrl;
 
-    private static final String HIBERNATE_DIALECT = "org.hibernate.dialect.MySQL8Dialect";
-    private static final String HIBERNATE_HBM2DDL_AUTO = "update";
-    private static final String HIBERNATE_SHOW_SQL = "true";
+    @Value("${db.username}")
+    private String dbUsername;
+
+    @Value("${db.password}")
+    private String dbPassword;
+
+    @Value("${db.driver}")
+    private String dbDriver;
+
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl(DB_URL);
-        dataSource.setUsername(DB_USER);
-        dataSource.setPassword(DB_PASSWORD);
+        dataSource.setDriverClassName(dbDriver);
+        dataSource.setUrl(dbUrl);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
         return dataSource;
     }
 
@@ -47,9 +63,9 @@ public class HibernateConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", HIBERNATE_DIALECT);
-        properties.put("hibernate.show_sql", HIBERNATE_SHOW_SQL);
-        properties.put("hibernate.hbm2ddl.auto", HIBERNATE_HBM2DDL_AUTO);
+        properties.put("hibernate.dialect", hibernateDialect);
+        properties.put("hibernate.show_sql", hibernateShowSql);
+        properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
         return properties;
     }
 

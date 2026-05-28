@@ -53,15 +53,10 @@ public class UserController {
         return "users-form";
     }
 
-    @PostMapping("/user/update")
-    public ResponseEntity<String> updateUser(@RequestBody User user) {
-        try {
-            userService.update(user);
-            return ResponseEntity.ok("redirect:/users");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Ошибка обновления: " + e.getMessage());
-        }
+    @PatchMapping("/{id}")
+    public String updateUser(@ModelAttribute("person") User user, @PathVariable("id") int id) {
+        userService.update(id, user);
+        return "redirect:/";
     }
 
     @PostMapping("/user/delete")
