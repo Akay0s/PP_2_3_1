@@ -53,9 +53,10 @@ public class UserController {
         return "users-form";
     }
 
-    @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("person") User user, @PathVariable("id") int id) {
-        userService.update(id, user);
+    @PostMapping("/user/update")
+    public String updateUser(@ModelAttribute("person") User user, @RequestParam("id") Long id) {
+        user.setId(id);
+        userService.update(id,user);
         return "redirect:/";
     }
 

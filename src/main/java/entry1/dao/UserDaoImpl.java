@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void update(int id, User updateUser) {
+    public void update(Long id, User updateUser) {
         User user = entityManager.find(User.class, id); // по id определили, какой именно юзер был изменен и передан в аргумент
         user.setName(updateUser.getName()); //этому найденному юзеру устанавливаем значения того юзера, который пришел из формы
         user.setLastName(updateUser.getLastName());
